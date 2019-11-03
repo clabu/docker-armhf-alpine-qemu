@@ -26,6 +26,8 @@ jobs:
           docker login -u="$DOCKER_USER" -p="$DOCKER_PASSWORD"
           docker tag $DOCKER_IMAGE:$DOCKER_TAG $DOCKER_USER/$DOCKER_IMAGE:$DOCKER_TAG
           docker push $DOCKER_USER/$DOCKER_IMAGE:$DOCKER_TAG
+          docker tag $DOCKER_IMAGE:$DOCKER_TAG $DOCKER_USER/$DOCKER_IMAGE:latest
+          docker push $DOCKER_USER/$DOCKER_IMAGE:latest
       env:
         - DOCKER_TAG=armhf
         - QEMU_BIN_URI='https://github.com/multiarch/qemu-user-static/releases/download/v4.1.0-1/qemu-arm-static'
