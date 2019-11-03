@@ -7,7 +7,7 @@ addons:
   apt:
     packages:
       - docker-ce
-
+      - curl
 install: skip
 
 jobs:
@@ -15,6 +15,8 @@ jobs:
     - &deploy-stage
       stage: build and deploy
       script:
+        - curl -L -O $QEMU_BIN_URI
+        - chmod 755 qemu-arm-static
         # build
         - docker build -t $DOCKER_IMAGE:$DOCKER_TAG -f Dockerfile .
         # test
@@ -26,6 +28,7 @@ jobs:
           docker push $DOCKER_USER/$DOCKER_IMAGE:$DOCKER_TAG
       env:
         - DOCKER_TAG=armhf
+        - QEMU_BIN_URI='https://github.com/multiarch/qemu-user-static/releases/download/v4.1.0-1/qemu-arm-static'
 env:
   global:
   - DOCKER_IMAGE=armhf-alpine-qemu
